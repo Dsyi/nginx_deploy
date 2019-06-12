@@ -4,6 +4,10 @@ CA_DIR=/usr/local/nginx/conf/cert
 VHOST_DIR=/usr/local/nginx/conf/vhost
 CONF_DIR=/usr/local/nginx/conf/
 
+echo "You have 20s for making sure that files: 1_liveapi.cn_bundle.crt、2_liveapi.cn.key、session_ticket.key exist in /opt/nginx_deploy directory!"
+echo "Ctrl + c for exit."
+sleep 20
+
 id www &>/dev/null
 if [ $? -ne 0 ];then
     useradd -M -s /sbin/nologin www
@@ -14,7 +18,7 @@ wget http://nginx.org/download/nginx-1.16.0.tar.gz
 tar fx openssl-1.1.1c.tar.gz      
 tar fx nginx-1.16.0.tar.gz      
 cd nginx-1.16.0/       
-yum install zlib-devel pcre-devel -y    
+yum install gcc zlib-devel pcre-devel lsof -y    
 ./configure --prefix=/usr/local/nginx --with-openssl=../openssl-1.1.1c --with-pcre --with-stream --with-stream_ssl_module --with-http_ssl_module --with-http_v2_module --with-threads
 make && make install     
 #scp root@10.200.1.245:/usr/local/nginx/conf/nginx.conf /usr/local/nginx/conf/      
